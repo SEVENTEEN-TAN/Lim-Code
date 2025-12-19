@@ -1139,7 +1139,7 @@ const zhCN: LanguageMessages = {
                 appInfo: {
                     title: '应用信息',
                     name: 'Lim Code - Vibe Coding助手',
-                    version: '版本：1.0.3',
+                    version: '版本：1.0.4',
                     repository: '项目仓库',
                     developer: '开发者'
                 }
@@ -1165,6 +1165,22 @@ const zhCN: LanguageMessages = {
                         ignoreList: '忽略列表',
                         ignoreListHint: '（支持通配符，如 *.log, temp*）',
                         inputPlaceholder: '输入要忽略的文件或目录模式...',
+                        deleteTooltip: '删除',
+                        addButton: '添加'
+                    }
+                },
+                search: {
+                    findFiles: {
+                        excludeList: '排除模式',
+                        excludeListHint: '（glob 格式，如 **/node_modules/**）',
+                        inputPlaceholder: '输入要排除的文件或目录模式...',
+                        deleteTooltip: '删除',
+                        addButton: '添加'
+                    },
+                    searchInFiles: {
+                        excludeList: '排除模式',
+                        excludeListHint: '（glob 格式，如 **/node_modules/**）',
+                        inputPlaceholder: '输入要排除的文件或目录模式...',
                         deleteTooltip: '删除',
                         addButton: '添加'
                     }

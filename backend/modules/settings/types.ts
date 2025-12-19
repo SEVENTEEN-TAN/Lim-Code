@@ -39,6 +39,30 @@ export interface ListFilesToolConfig {
 }
 
 /**
+ * Find Files 工具配置
+ */
+export interface FindFilesToolConfig {
+    /**
+     * 排除模式（glob 格式）
+     * 用于 vscode.workspace.findFiles 的 exclude 参数
+     */
+    excludePatterns: string[];
+    [key: string]: unknown;
+}
+
+/**
+ * Search In Files 工具配置
+ */
+export interface SearchInFilesToolConfig {
+    /**
+     * 排除模式（glob 格式）
+     * 用于 vscode.workspace.findFiles 的 exclude 参数
+     */
+    excludePatterns: string[];
+    [key: string]: unknown;
+}
+
+/**
  * Apply Diff 工具配置
  */
 export interface ApplyDiffToolConfig {
@@ -661,6 +685,8 @@ export interface SummarizeConfig {
  */
 export interface ToolsConfig {
     list_files?: ListFilesToolConfig;
+    find_files?: FindFilesToolConfig;
+    search_in_files?: SearchInFilesToolConfig;
     apply_diff?: ApplyDiffToolConfig;
     delete_file?: DeleteFileToolConfig;
     execute_command?: ExecuteCommandToolConfig;
@@ -788,11 +814,115 @@ export interface SettingsChangeEvent {
 export type SettingsChangeListener = (event: SettingsChangeEvent) => void | Promise<void>;
 
 /**
+ * 常用忽略模式列表
+ * 供 list_files、find_files、search_in_files 共用
+ */
+export const COMMON_IGNORE_PATTERNS = [
+    // 版本控制
+    '.git',
+    '.svn',
+    '.hg',
+    // 依赖目录
+    'node_modules',
+    '__pycache__',
+    '.venv',
+    'venv',
+    'vendor',
+    // IDE 配置
+    '.idea',
+    // 系统文件
+    '.DS_Store',
+    'Thumbs.db',
+    // 构建输出
+    'dist',
+    'build',
+    'out',
+    '.next',
+    '.nuxt',
+    // 缓存
+    '.cache',
+    '.turbo',
+    '.parcel-cache',
+    // 测试覆盖率
+    'coverage',
+    '.nyc_output',
+    // 锁文件
+    'package-lock.json',
+    'pnpm-lock.yaml',
+    'yarn.lock',
+    // 编译产物
+    '*.pyc',
+    '*.pyo',
+    '*.class',
+    '*.o',
+    '*.obj',
+    // 日志文件
+    '*.log',
+    // 临时文件
+    '*.tmp',
+    '*.temp',
+    '*.swp',
+    '*.swo'
+];
+
+/**
  * 默认 list_files 配置
  */
 export const DEFAULT_LIST_FILES_CONFIG: ListFilesToolConfig = {
-    ignorePatterns: [
-        '.git'
+    ignorePatterns: [...COMMON_IGNORE_PATTERNS]
+};
+
+/**
+ * 默认 find_files 配置
+ */
+export const DEFAULT_FIND_FILES_CONFIG: FindFilesToolConfig = {
+    excludePatterns: [
+        // glob 格式的排除模式
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/.svn/**',
+        '**/.hg/**',
+        '**/__pycache__/**',
+        '**/.venv/**',
+        '**/venv/**',
+        '**/vendor/**',
+        '**/.idea/**',
+        '**/dist/**',
+        '**/build/**',
+        '**/out/**',
+        '**/.next/**',
+        '**/.nuxt/**',
+        '**/.cache/**',
+        '**/.turbo/**',
+        '**/coverage/**',
+        '**/.nyc_output/**'
+    ]
+};
+
+/**
+ * 默认 search_in_files 配置
+ */
+export const DEFAULT_SEARCH_IN_FILES_CONFIG: SearchInFilesToolConfig = {
+    excludePatterns: [
+        // glob 格式的排除模式
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/.svn/**',
+        '**/.hg/**',
+        '**/__pycache__/**',
+        '**/.venv/**',
+        '**/venv/**',
+        '**/vendor/**',
+        '**/.idea/**',
+        '**/dist/**',
+        '**/build/**',
+        '**/out/**',
+        '**/.next/**',
+        '**/.nuxt/**',
+        '**/.cache/**',
+        '**/.turbo/**',
+        '**/coverage/**',
+        '**/.nyc_output/**'
     ]
 };
 
@@ -1150,6 +1280,8 @@ export const DEFAULT_SYSTEM_PROMPT_CONFIG: SystemPromptConfig = {
 
 /**
  * 默认上下文感知配置
+ *
+ * ignorePatterns 使用与 COMMON_IGNORE_PATTERNS 相同的默认规则
  */
 export const DEFAULT_CONTEXT_AWARENESS_CONFIG: ContextAwarenessConfig = {
     includeWorkspaceFiles: true,
@@ -1158,35 +1290,7 @@ export const DEFAULT_CONTEXT_AWARENESS_CONFIG: ContextAwarenessConfig = {
     maxOpenTabs: 20,
     includeActiveEditor: true,
     diagnostics: DEFAULT_DIAGNOSTICS_CONFIG,
-    ignorePatterns: [
-        // 版本控制
-        '.git',
-        // 依赖目录
-        'node_modules',
-        '__pycache__',
-        // IDE 配置
-        '.vscode',
-        '.idea',
-        // 系统文件
-        '.DS_Store',
-        // 构建输出
-        '.next',
-        '.nuxt',
-        'dist',
-        'build',
-        // 缓存
-        '.cache',
-        '.turbo',
-        // 测试覆盖率
-        'coverage',
-        '.nyc_output',
-        // 日志文件
-        '*.log',
-        // 锁文件
-        'package-lock.json',
-        'pnpm-lock.yaml',
-        'yarn.lock'
-    ]
+    ignorePatterns: [...COMMON_IGNORE_PATTERNS]
 };
 
 /**
@@ -1199,6 +1303,8 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
     toolAutoExec: DEFAULT_TOOL_AUTO_EXEC_CONFIG,
     toolsConfig: {
         list_files: DEFAULT_LIST_FILES_CONFIG,
+        find_files: DEFAULT_FIND_FILES_CONFIG,
+        search_in_files: DEFAULT_SEARCH_IN_FILES_CONFIG,
         apply_diff: DEFAULT_APPLY_DIFF_CONFIG,
         delete_file: DEFAULT_DELETE_FILE_CONFIG,
         execute_command: getDefaultExecuteCommandConfig(),

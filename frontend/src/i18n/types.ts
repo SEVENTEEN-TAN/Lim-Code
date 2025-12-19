@@ -387,6 +387,24 @@ export interface LanguageMessages {
                     };
                 };
                 
+                /** 搜索工具设置 */
+                search: {
+                    findFiles: {
+                        excludeList: string;
+                        excludeListHint: string;
+                        inputPlaceholder: string;
+                        deleteTooltip: string;
+                        addButton: string;
+                    };
+                    searchInFiles: {
+                        excludeList: string;
+                        excludeListHint: string;
+                        inputPlaceholder: string;
+                        deleteTooltip: string;
+                        addButton: string;
+                    };
+                };
+                
                 /** 终端工具设置 */
                 terminal: {
                     executeCommand: {

@@ -19,7 +19,7 @@ export function createConversationModule(storage: IStorageAdapter): ModuleDefini
     return {
         id: 'conversation',
         name: 'Conversation Manager',
-        version: '1.0.3',
+        version: '1.0.4',
         description: 'Provides conversation history management including message operations, snapshots, and statistics',
 
         apis: [

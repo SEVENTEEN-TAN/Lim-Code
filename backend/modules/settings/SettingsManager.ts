@@ -13,6 +13,8 @@ import type {
     ProxySettings,
     ToolsConfig,
     ListFilesToolConfig,
+    FindFilesToolConfig,
+    SearchInFilesToolConfig,
     ApplyDiffToolConfig,
     DeleteFileToolConfig,
     ExecuteCommandToolConfig,
@@ -33,6 +35,8 @@ import type {
 import {
     DEFAULT_GLOBAL_SETTINGS,
     DEFAULT_LIST_FILES_CONFIG,
+    DEFAULT_FIND_FILES_CONFIG,
+    DEFAULT_SEARCH_IN_FILES_CONFIG,
     DEFAULT_APPLY_DIFF_CONFIG,
     DEFAULT_DELETE_FILE_CONFIG,
     DEFAULT_CHECKPOINT_CONFIG,
@@ -364,6 +368,74 @@ export class SettingsManager {
         this.notifyChange({
             type: 'tools',
             path: 'toolsConfig.list_files',
+            oldValue: oldConfig,
+            newValue: newConfig,
+            settings: this.settings
+        });
+    }
+    
+    /**
+     * 获取 find_files 工具配置
+     */
+    getFindFilesConfig(): Readonly<FindFilesToolConfig> {
+        return this.settings.toolsConfig?.find_files || DEFAULT_FIND_FILES_CONFIG;
+    }
+    
+    /**
+     * 更新 find_files 工具配置
+     */
+    async updateFindFilesConfig(config: Partial<FindFilesToolConfig>): Promise<void> {
+        const oldConfig = this.getFindFilesConfig();
+        const newConfig = {
+            ...oldConfig,
+            ...config
+        };
+        
+        if (!this.settings.toolsConfig) {
+            this.settings.toolsConfig = {};
+        }
+        this.settings.toolsConfig.find_files = newConfig;
+        this.settings.lastUpdated = Date.now();
+        
+        await this.storage.save(this.settings);
+        
+        this.notifyChange({
+            type: 'tools',
+            path: 'toolsConfig.find_files',
+            oldValue: oldConfig,
+            newValue: newConfig,
+            settings: this.settings
+        });
+    }
+    
+    /**
+     * 获取 search_in_files 工具配置
+     */
+    getSearchInFilesConfig(): Readonly<SearchInFilesToolConfig> {
+        return this.settings.toolsConfig?.search_in_files || DEFAULT_SEARCH_IN_FILES_CONFIG;
+    }
+    
+    /**
+     * 更新 search_in_files 工具配置
+     */
+    async updateSearchInFilesConfig(config: Partial<SearchInFilesToolConfig>): Promise<void> {
+        const oldConfig = this.getSearchInFilesConfig();
+        const newConfig = {
+            ...oldConfig,
+            ...config
+        };
+        
+        if (!this.settings.toolsConfig) {
+            this.settings.toolsConfig = {};
+        }
+        this.settings.toolsConfig.search_in_files = newConfig;
+        this.settings.lastUpdated = Date.now();
+        
+        await this.storage.save(this.settings);
+        
+        this.notifyChange({
+            type: 'tools',
+            path: 'toolsConfig.search_in_files',
             oldValue: oldConfig,
             newValue: newConfig,
             settings: this.settings

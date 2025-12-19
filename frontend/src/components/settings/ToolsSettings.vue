@@ -18,6 +18,8 @@ import { useI18n } from '@/composables'
 import ListFilesConfig from './tools/files/list_files.vue'
 import ApplyDiffConfig from './tools/files/apply_diff.vue'
 import ExecuteCommandConfig from './tools/terminal/execute_command.vue'
+import FindFilesConfig from './tools/search/find_files.vue'
+import SearchInFilesConfig from './tools/search/search_in_files.vue'
 import GenerateImageConfig from './tools/media/generate_image.vue'
 import RemoveBackgroundConfig from './tools/media/remove_background.vue'
 import CropImageConfig from './tools/media/crop_image.vue'
@@ -54,6 +56,8 @@ function hasConfigPanel(toolName: string): boolean {
     'list_files',
     'apply_diff',
     'execute_command',
+    'find_files',
+    'search_in_files',
     'generate_image',
     'remove_background',
     'crop_image',
@@ -332,6 +336,12 @@ onMounted(() => {
             <ExecuteCommandConfig
               v-if="tool.name === 'execute_command' && isConfigExpanded(tool.name)"
               :tool-name="tool.name"
+            />
+            <FindFilesConfig
+              v-if="tool.name === 'find_files' && isConfigExpanded(tool.name)"
+            />
+            <SearchInFilesConfig
+              v-if="tool.name === 'search_in_files' && isConfigExpanded(tool.name)"
             />
             <GenerateImageConfig
               v-if="tool.name === 'generate_image' && isConfigExpanded(tool.name)"

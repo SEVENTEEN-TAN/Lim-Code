@@ -7,6 +7,33 @@
 import * as vscode from 'vscode';
 import type { Tool, ToolResult } from '../types';
 import { getWorkspaceRoot, getAllWorkspaces, parseWorkspacePath, toRelativePath } from '../utils';
+import { getGlobalSettingsManager } from '../../core/settingsContext';
+
+/**
+ * 默认排除模式
+ */
+const DEFAULT_EXCLUDE = '**/node_modules/**';
+
+/**
+ * 获取排除模式
+ *
+ * 从设置管理器获取用户配置的排除模式，如果未配置则使用默认值
+ * 将多个模式合并为单个 glob 模式（用大括号语法）
+ */
+function getExcludePattern(): string {
+    const settingsManager = getGlobalSettingsManager();
+    if (settingsManager) {
+        const config = settingsManager.getSearchInFilesConfig();
+        if (config.excludePatterns && config.excludePatterns.length > 0) {
+            // 多个模式用 {} 语法组合
+            if (config.excludePatterns.length === 1) {
+                return config.excludePatterns[0];
+            }
+            return `{${config.excludePatterns.join(',')}}`;
+        }
+    }
+    return DEFAULT_EXCLUDE;
+}
 
 /**
  * 转义正则特殊字符
@@ -23,7 +50,8 @@ async function searchInDirectory(
     filePattern: string,
     searchRegex: RegExp,
     maxResults: number,
-    workspaceName: string | null
+    workspaceName: string | null,
+    excludePattern: string
 ): Promise<Array<{
     file: string;
     workspace?: string;
@@ -42,7 +70,7 @@ async function searchInDirectory(
     }> = [];
     
     const pattern = new vscode.RelativePattern(searchRoot, filePattern);
-    const files = await vscode.workspace.findFiles(pattern, '**/node_modules/**', 1000);
+    const files = await vscode.workspace.findFiles(pattern, excludePattern, 1000);
     
     for (const fileUri of files) {
         if (results.length >= maxResults) {
@@ -180,6 +208,9 @@ export function createSearchInFilesTool(): Tool {
                     context: string;
                 }> = [];
                 
+                // 获取排除模式
+                const excludePattern = getExcludePattern();
+                
                 // 解析路径，确定搜索范围
                 const { workspace: targetWorkspace, relativePath, isExplicit } = parseWorkspacePath(searchPath);
                 
@@ -191,7 +222,8 @@ export function createSearchInFilesTool(): Tool {
                         filePattern,
                         searchRegex,
                         maxResults,
-                        workspaces.length > 1 ? targetWorkspace.name : null
+                        workspaces.length > 1 ? targetWorkspace.name : null,
+                        excludePattern
                     );
                 } else if (searchPath === '.' && workspaces.length > 1) {
                     // 搜索所有工作区
@@ -204,7 +236,8 @@ export function createSearchInFilesTool(): Tool {
                             filePattern,
                             searchRegex,
                             remaining,
-                            ws.name
+                            ws.name,
+                            excludePattern
                         );
                         allResults.push(...wsResults);
                     }
@@ -217,7 +250,8 @@ export function createSearchInFilesTool(): Tool {
                         filePattern,
                         searchRegex,
                         maxResults,
-                        workspaces.length > 1 ? (targetWorkspace?.name || workspaces[0].name) : null
+                        workspaces.length > 1 ? (targetWorkspace?.name || workspaces[0].name) : null,
+                        excludePattern
                     );
                 }
 

@@ -1139,7 +1139,7 @@ const ja: LanguageMessages = {
                 appInfo: {
                     title: 'アプリケーション情報',
                     name: 'Lim Code - Vibe Coding アシスタント',
-                    version: 'バージョン：1.0.3',
+                    version: 'バージョン：1.0.4',
                     repository: 'リポジトリ',
                     developer: '開発者'
                 }
@@ -1165,6 +1165,22 @@ const ja: LanguageMessages = {
                         ignoreList: '無視リスト',
                         ignoreListHint: '（ワイルドカードをサポート、例: *.log, temp*）',
                         inputPlaceholder: '無視するファイルまたはディレクトリパターンを入力...',
+                        deleteTooltip: '削除',
+                        addButton: '追加'
+                    }
+                },
+                search: {
+                    findFiles: {
+                        excludeList: '除外パターン',
+                        excludeListHint: '（glob 形式、例: **/node_modules/**）',
+                        inputPlaceholder: '除外するファイルまたはディレクトリパターンを入力...',
+                        deleteTooltip: '削除',
+                        addButton: '追加'
+                    },
+                    searchInFiles: {
+                        excludeList: '除外パターン',
+                        excludeListHint: '（glob 形式、例: **/node_modules/**）',
+                        inputPlaceholder: '除外するファイルまたはディレクトリパターンを入力...',
                         deleteTooltip: '削除',
                         addButton: '追加'
                     }

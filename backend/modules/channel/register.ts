@@ -27,7 +27,7 @@ export function registerChannelModule(
     return {
         id: 'channel',
         name: 'Channel Manager',
-        version: '1.0.3',
+        version: '1.0.4',
         description: '管理 LLM 渠道调用，支持 Gemini、OpenAI、Anthropic 等多种格式',
         
         apis: [

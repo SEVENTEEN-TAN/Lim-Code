@@ -724,6 +724,46 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                     break;
                 }
                 
+                case 'tools.getFindFilesConfig': {
+                    try {
+                        const config = this.settingsManager.getFindFilesConfig();
+                        this.sendResponse(requestId, { config });
+                    } catch (error: any) {
+                        this.sendError(requestId, 'GET_FIND_FILES_CONFIG_ERROR', error.message || t('webview.errors.getFindFilesConfigFailed'));
+                    }
+                    break;
+                }
+                
+                case 'tools.updateFindFilesConfig': {
+                    try {
+                        await this.settingsManager.updateFindFilesConfig(data.config);
+                        this.sendResponse(requestId, { success: true });
+                    } catch (error: any) {
+                        this.sendError(requestId, 'UPDATE_FIND_FILES_CONFIG_ERROR', error.message || t('webview.errors.updateFindFilesConfigFailed'));
+                    }
+                    break;
+                }
+                
+                case 'tools.getSearchInFilesConfig': {
+                    try {
+                        const config = this.settingsManager.getSearchInFilesConfig();
+                        this.sendResponse(requestId, { config });
+                    } catch (error: any) {
+                        this.sendError(requestId, 'GET_SEARCH_IN_FILES_CONFIG_ERROR', error.message || t('webview.errors.getSearchInFilesConfigFailed'));
+                    }
+                    break;
+                }
+                
+                case 'tools.updateSearchInFilesConfig': {
+                    try {
+                        await this.settingsManager.updateSearchInFilesConfig(data.config);
+                        this.sendResponse(requestId, { success: true });
+                    } catch (error: any) {
+                        this.sendError(requestId, 'UPDATE_SEARCH_IN_FILES_CONFIG_ERROR', error.message || t('webview.errors.updateSearchInFilesConfigFailed'));
+                    }
+                    break;
+                }
+                
                 case 'tools.updateApplyDiffConfig': {
                     const result = await this.settingsHandler.updateApplyDiffConfig({ config: data.config });
                     if (result.success) {

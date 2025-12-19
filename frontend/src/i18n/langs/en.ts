@@ -1139,7 +1139,7 @@ const en: LanguageMessages = {
                 appInfo: {
                     title: 'Application Info',
                     name: 'Lim Code - Vibe Coding Assistant',
-                    version: 'Version: 1.0.3',
+                    version: 'Version: 1.0.4',
                     repository: 'Repository',
                     developer: 'Developer'
                 }
@@ -1165,6 +1165,22 @@ const en: LanguageMessages = {
                         ignoreList: 'Ignore List',
                         ignoreListHint: '(Supports wildcards, e.g. *.log, temp*)',
                         inputPlaceholder: 'Enter file or directory pattern to ignore...',
+                        deleteTooltip: 'Delete',
+                        addButton: 'Add'
+                    }
+                },
+                search: {
+                    findFiles: {
+                        excludeList: 'Exclude Patterns',
+                        excludeListHint: '(glob format, e.g. **/node_modules/**)',
+                        inputPlaceholder: 'Enter file or directory pattern to exclude...',
+                        deleteTooltip: 'Delete',
+                        addButton: 'Add'
+                    },
+                    searchInFiles: {
+                        excludeList: 'Exclude Patterns',
+                        excludeListHint: '(glob format, e.g. **/node_modules/**)',
+                        inputPlaceholder: 'Enter file or directory pattern to exclude...',
                         deleteTooltip: 'Delete',
                         addButton: 'Add'
                     }

@@ -381,6 +381,11 @@ export class ChatHandler {
 
                 // 检查是否已取消
                 if (request.abortSignal?.aborted) {
+                    // 发送 cancelled 消息给前端，让前端正确清理状态
+                    yield {
+                        conversationId,
+                        cancelled: true as const
+                    } as any;
                     return;
                 }
 
@@ -1412,6 +1417,11 @@ export class ChatHandler {
                 
                 // 检查是否已取消
                 if (request.abortSignal?.aborted) {
+                    // 发送 cancelled 消息给前端，让前端正确清理状态
+                    yield {
+                        conversationId,
+                        cancelled: true as const
+                    } as any;
                     return;
                 }
                 
@@ -2389,6 +2399,11 @@ export class ChatHandler {
 
                 // 检查是否已取消
                 if (request.abortSignal?.aborted) {
+                    // 发送 cancelled 消息给前端，让前端正确清理状态
+                    yield {
+                        conversationId,
+                        cancelled: true as const
+                    } as any;
                     return;
                 }
  
@@ -2932,9 +2947,14 @@ export class ChatHandler {
                 
                 // 检查是否已取消
                 if (request.abortSignal?.aborted) {
+                    // 发送 cancelled 消息给前端，让前端正确清理状态
+                    yield {
+                        conversationId,
+                        cancelled: true as const
+                    } as any;
                     return;
                 }
-                
+
                 // 为模型消息创建存档点（如果配置了执行前）
                 // 根据 modelOuterLayerOnly 设置决定是否在每次迭代都创建
                 const editOuterLayerOnly = this.settingsManager?.isModelOuterLayerOnly() ?? true;

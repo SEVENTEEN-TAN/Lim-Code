@@ -8,6 +8,33 @@
 import * as vscode from 'vscode';
 import type { Tool, ToolResult } from '../types';
 import { getWorkspaceRoot, getAllWorkspaces, toRelativePath } from '../utils';
+import { getGlobalSettingsManager } from '../../core/settingsContext';
+
+/**
+ * 默认排除模式
+ */
+const DEFAULT_EXCLUDE = '**/node_modules/**';
+
+/**
+ * 获取排除模式
+ *
+ * 从设置管理器获取用户配置的排除模式，如果未配置则使用默认值
+ * 将多个模式合并为单个 glob 模式（用大括号语法）
+ */
+function getExcludePattern(): string {
+    const settingsManager = getGlobalSettingsManager();
+    if (settingsManager) {
+        const config = settingsManager.getFindFilesConfig();
+        if (config.excludePatterns && config.excludePatterns.length > 0) {
+            // 多个模式用 {} 语法组合
+            if (config.excludePatterns.length === 1) {
+                return config.excludePatterns[0];
+            }
+            return `{${config.excludePatterns.join(',')}}`;
+        }
+    }
+    return DEFAULT_EXCLUDE;
+}
 
 /**
  * 单个模式的查找结果
@@ -161,7 +188,8 @@ export function createFindFilesTool(): Tool {
                 return { success: false, error: 'patterns is required' };
             }
 
-            const exclude = (args.exclude as string) || '**/node_modules/**';
+            // 如果用户指定了 exclude 参数则使用，否则使用配置的默认值
+            const exclude = (args.exclude as string) || getExcludePattern();
             const maxResults = (args.maxResults as number) || 500;
 
             const results: FindResult[] = [];

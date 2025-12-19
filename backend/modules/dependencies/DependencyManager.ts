@@ -224,7 +224,7 @@ export class DependencyManager {
             // 创建临时 package.json
             const tempPackageJson = {
                 name: 'limcode-deps',
-                version: '1.0.3',
+                version: '1.0.4',
                 dependencies: {
                     [name]: config.version
                 }

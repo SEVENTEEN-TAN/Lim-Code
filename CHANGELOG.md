@@ -2,6 +2,14 @@
 
 All notable changes to the "Lim Code" extension will be documented in this file.
 
+## [1.0.4] - 2025-12-19
+
+### Fixed
+- 修复工具执行完成后点击终止按钮无法正常结束的问题（循环开始时检测取消信号后需发送 cancelled 消息给前端）
+
+### Improved
+- 优化搜索工具（find_files、search_in_files）忽略问题，添加默认排除模式配置
+
 ## [1.0.3] - 2025-12-19
 
 ### Added

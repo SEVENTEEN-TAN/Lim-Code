@@ -128,7 +128,7 @@ export class HttpMcpClient extends EventEmitter {
             },
             clientInfo: {
                 name: 'LimCode',
-                version: '1.0.3'
+                version: '1.0.4'
             }
         });
         
